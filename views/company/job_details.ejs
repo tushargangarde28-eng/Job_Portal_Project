@@ -1,0 +1,99 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+
+      <div class="card shadow-lg border-0 rounded-4">
+        
+        <!-- Header -->
+        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #4e73df, #1cc88a);">
+          <h3 class="mb-0"><i class="bi bi-briefcase me-2"></i><%- jobs[0].job_title %></h3>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+          <div class="mb-3">
+            <h5 class="fw-semibold text-secondary">Company:</h5>
+            <p><%= jobs[0].company_name %></p>
+          </div>
+
+          <div class="mb-3">
+            <h5 class="fw-semibold text-secondary">Job Description:</h5>
+            <p><%= jobs[0].job_description %></p>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h6 class="fw-semibold text-secondary">Category:</h6>
+              <!-- <p>(<%= jobs[0].job_category %> || Empty) </p> -->
+               <p><%= jobs[0].job_category ? jobs[0].job_category : 'Empty' %></p>
+
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-semibold text-secondary">Type:</h6>
+              <p><%= jobs[0].job_type %></p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h6 class="fw-semibold text-secondary">Experience:</h6>
+              <p><%= jobs[0].experience_min %> - <%= jobs[0].experience_max %> years</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-semibold text-secondary">Vacancies:</h6>
+              <p><%= jobs[0].vacancies %></p>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold text-secondary">Skills Required:</h6>
+            <span class="badge bg-info text-dark fs-6"><%- jobs[0].skills %></span>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold text-secondary">Status:</h6>
+            <% if (jobs[0].status === 'active') { %>
+              <span class="badge bg-success">Active</span>
+            <% } else if (jobs[0].status === 'closed') { %>
+              <span class="badge bg-danger">Closed</span>
+            <% } else { %>
+              <span class="badge bg-secondary"><%= jobs[0].status %></span>
+            <% } %>
+          </div>
+
+          <% if (jobs[0].reference_link) { %>
+          <div class="mb-3">
+            <h6 class="fw-semibold text-secondary">Reference Link:</h6>
+            <a href="<%= jobs[0].reference_link %>" target="_blank" class="text-primary text-decoration-none">
+              <i class="bi bi-box-arrow-up-right me-1"></i>Visit Reference
+            </a>
+          </div>
+          <% } %>
+
+          <hr>
+
+          <div class="d-flex justify-content-between text-muted mb-3">
+            <small>Created At: <%= jobs[0].created_at.toLocaleString ? jobs[0].created_at.toLocaleString() : jobs[0].created_at %></small>
+            <small>Updated At: <%= jobs[0].updated_at.toLocaleString ? jobs[0].updated_at.toLocaleString() : jobs[0].updated_at %></small>
+          </div>
+
+          <!-- Back Button -->
+          <div class="text-center mt-4">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-arrow-left-circle me-2"></i>Back
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

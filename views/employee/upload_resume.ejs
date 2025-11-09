@@ -1,0 +1,28 @@
+<%- include("navbar.ejs") %>
+
+<div class="container mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white fw-semibold">
+      Upload Resume
+    </div>
+    <div class="card-body">
+      <form action="/employee/upload_resume" method="post" enctype="multipart/form-data">
+
+        <!-- Resume Upload -->
+        <div class="mb-3">
+          <label for="resume" class="form-label fw-semibold">Select Resume (PDF only)</label>
+          <input type="file" class="form-control" id="resume" name="employee_resume" accept=".pdf" required>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-upload me-1"></i> Upload Resume
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>

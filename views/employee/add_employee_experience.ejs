@@ -1,0 +1,74 @@
+<%- include("navbar.ejs") %>
+<div class="container mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white fw-semibold">
+      Add Experience
+    </div>
+    <div class="card-body">
+      <form action="/employee/add_experience" method="post">
+
+        <!-- Experience ID (hidden if auto) -->
+        <input type="hidden" name="experience_id" value="<%- experience ? experience.experience_id : '' %>">
+
+        <!-- Employee ID -->
+        <!-- <div class="mb-3">
+          <label for="employee_id" class="form-label fw-semibold">Employee ID</label>
+          <input type="text" class="form-control" id="employee_id" name="employee_id"
+                 value="<%- experience ? experience.employee_id : '' %>" required>
+        </div> -->
+
+        <!-- Company Name -->
+        <div class="mb-3">
+          <label for="company_name" class="form-label fw-semibold">Company Name</label>
+          <input type="text" class="form-control" id="company_name" name="company_name"
+                 placeholder="Enter company name"  required>
+        </div>
+
+        <!-- Job Title -->
+        <div class="mb-3">
+          <label for="job_title" class="form-label fw-semibold">Job Title</label>
+          <input type="text" class="form-control" id="job_title" name="job_title"
+                 placeholder="Enter job title"  required>
+        </div>
+
+        <!-- Start Date -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="start_date" class="form-label fw-semibold">Start Date</label>
+            <input type="date" class="form-control" id="start_date" name="start_date"
+                   required>
+          </div>
+
+          <!-- End Date -->
+          <div class="col-md-6 mb-3">
+            <label for="end_date" class="form-label fw-semibold">End Date</label>
+            <input type="date" class="form-control" id="end_date" name="end_date"
+                >
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+          <label for="status" class="form-label fw-semibold">Status</label>
+          <select class="form-select" id="status" name="status" required>
+            <option value="" disabled selected>Select status</option>
+            <option>Working</option>
+            <option >Complete</option>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-save me-1"></i> Save Experience
+          </button>
+          <a href="/employee/profile" class="btn btn-outline-secondary px-4 ms-2">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back to Profile
+              </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>

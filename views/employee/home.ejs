@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Home — JobPortal</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body { background-color: #f9fafc; font-family: "Poppins", sans-serif; }
+    .navbar-nav .nav-link { color: #212529 !important; transition: color 0.3s ease; }
+    .navbar-nav .nav-link:hover { color: #0d6efd !important; }
+    .hero-section {
+      background: linear-gradient(120deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 80px 0;
+    }
+    .card-custom {
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .card-custom:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    footer {
+      background: #0d1b2a;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+<%- include('navbar') %>
+  <!-- 🌟 Hero Section -->
+  <section class="hero-section text-center">
+    <div class="container py-5">
+      <h1 class="display-5 fw-bold mb-3">Welcome, <%- employee[0].employee_name %>  👋</h1>
+      <p class="lead mb-4">Your personalized space to manage applications, explore new jobs, and grow your career.</p>
+      <a href="/employee/jobs" class="btn btn-light btn-lg rounded-pill px-4 me-2">
+        <i class="bi bi-search"></i> Find Jobs
+      </a>
+      <a href="/employee/profile" class="btn btn-outline-light btn-lg rounded-pill px-4">
+        <i class="bi bi-person-lines-fill"></i> View Profile
+      </a>
+    </div>
+  </section>
+
+  <!-- 📊 Dashboard Stats -->
+  <section class="py-5">
+    <div class="container text-center">
+      <h3 class="fw-bold mb-5">Your Dashboard</h3>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card card-custom p-4">
+            <i class="bi bi-briefcase-fill text-primary fs-1 mb-3"></i>
+            <h5 class="fw-semibold">Applied Jobs</h5>
+            <p class="text-muted">You have applied for <strong></strong> positions this month.</p>
+            <a href="/employee/applications" class="btn btn-outline-primary btn-sm">View All</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-custom p-4">
+            <i class="bi bi-bookmark-fill text-success fs-1 mb-3"></i>
+            <h5 class="fw-semibold">Saved Jobs</h5>
+            <p class="text-muted">You have saved <strong></strong> opportunities.</p>
+            <a href="/employee/saved_jobs" class="btn btn-outline-success btn-sm">View Saved</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-custom p-4">
+            <i class="bi bi-person-lines-fill text-warning fs-1 mb-3"></i>
+            <h5 class="fw-semibold">Profile Status</h5>
+            <p class="text-muted">Your profile is <strong><%-profile_completion %></strong> complete.</p>
+            <a href="/employee/profile" class="btn btn-outline-warning btn-sm">Update Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 💼 Recommended Jobs -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <h3 class="fw-bold text-center mb-5">Recommended For You</h3>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-custom p-3">
+            <h5 class="fw-bold mb-2">Frontend Developer</h5>
+            <p class="text-muted mb-1">Google • Bengaluru</p>
+            <p class="small text-secondary">Build UI with React and modern web tools.</p>
+            <button class="btn btn-outline-primary btn-sm">Apply Now</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-custom p-3">
+            <h5 class="fw-bold mb-2">Data Analyst</h5>
+            <p class="text-muted mb-1">Amazon • Pune</p>
+            <p class="small text-secondary">Analyze large datasets to gain insights.</p>
+            <button class="btn btn-outline-primary btn-sm">Apply Now</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-custom p-3">
+            <h5 class="fw-bold mb-2">Backend Engineer</h5>
+            <p class="text-muted mb-1">Microsoft • Hyderabad</p>
+            <p class="small text-secondary">Develop scalable APIs using Node.js.</p>
+            <button class="btn btn-outline-primary btn-sm">Apply Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-1">© 2025 JobPortal. All rights reserved.</p>
+      <div>
+        <a href="#" class="text-muted me-3"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-muted me-3"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="text-muted"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

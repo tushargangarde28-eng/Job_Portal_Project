@@ -1,0 +1,125 @@
+
+<%- include("navbar.ejs") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0 rounded-4">
+        
+        <!-- Header -->
+        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #4e73df, #1cc88a);">
+          <h4 class="mb-0"><i class="bi bi-briefcase me-2"></i>Edit Job</h4>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-5">
+          <form action="/company/post_job" method="POST">
+            <!-- Job Title -->
+            <div class="mb-3">
+              <input name="job_id" type="hidden" value="<%= jobs[0].job_id %>">
+              <label for="job_title" class="form-label fw-semibold">Job Title</label>
+              <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter job title" value="<%-jobs[0].job_title%>" required>
+            </div>
+
+            <!-- Job Description -->
+            <div class="mb-3">
+              <label for="job_description" class="form-label fw-semibold">Job Description</label>
+              <textarea class="form-control" id="job_description" name="job_description" rows="4" placeholder="Describe the role and responsibilities" required><%-jobs[0].job_description%></textarea>
+            </div>
+
+            <!-- Job Category -->
+            <div class="mb-3">
+              <label for="job_category" class="form-label fw-semibold">Job Category</label>
+              <select class="form-select" id="job_category" name="job_category" required>
+                <option value="">Select Category</option>
+                <option>IT & Software</option>
+                <option>Sales & Marketing</option>
+                <option>Finance</option>
+                <option>Design</option>
+                <option>Education</option>
+                <option>Healthcare</option>
+              </select>
+            </div>
+
+            <!-- Job Type -->
+            <div class="mb-3">
+              <label for="job_type" class="form-label fw-semibold">Job Type</label>
+              <select class="form-select" id="job_type" name="job_type" required>
+                <option value="">Select Type</option>
+                <option>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Internship</option>
+                <option>Remote</option>
+                <option>Contract</option>
+              </select>
+            </div>
+
+            <!-- Experience -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="experience_min" class="form-label fw-semibold">Minimum Experience (Years)</label>
+                <input type="number" class="form-control" id="experience_min" name="experience_min" min="0" value="<%-jobs[0].experience_min%>" placeholder="e.g. 1" required>
+              </div>
+              <div class="col-md-6">
+                <label for="experience_max" class="form-label fw-semibold">Maximum Experience (Years)</label>
+                <input type="number" class="form-control" id="experience_max" name="experience_max" min="0" placeholder="e.g. 5" value="<%-jobs[0].experience_max%>" required>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="mb-3">
+              <label for="skills" class="form-label fw-semibold">Required Skills</label>
+              <input type="text" class="form-control" id="skills" name="skills" placeholder="e.g. JavaScript, Node.js, MySQL" value="<%-jobs[0].skills%>" required>
+            </div>
+
+            <!-- Vacancies -->
+            <div class="mb-3">
+              <label for="vacancies" class="form-label fw-semibold">Vacancies</label>
+              <input type="number" class="form-control" id="vacancies" name="vacancies" value="<%-jobs[0].vacancies%>" min="1" placeholder="Number of positions" required>
+            </div>
+
+            <!-- Status -->
+            <div class="mb-3">
+              <label for="status" class="form-label fw-semibold">Job Status</label>
+              <select class="form-select" id="status" name="status" required>
+                <option value="">Select Status</option>
+                <option value="Active">Active</option>
+                <option value="Closed">Closed</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+
+            <!-- Reference Link -->
+            <div class="mb-3">
+              <label for="reference_link" class="form-label fw-semibold">Reference Link</label>
+              <input type="url" class="form-control" id="reference_link" value="<%-jobs[0].reference_link%>" name="reference_link" placeholder="Optional: job reference or website link">
+            </div>
+
+            <!-- Created / Updated At (hidden) -->
+            <input type="hidden" name="created_at" value="<%= new Date().toISOString().slice(0,19).replace('T', ' ') %>">
+            <input type="hidden" name="updated_at" value="<%= new Date().toISOString().slice(0,19).replace('T', ' ') %>">
+
+            <!-- Submit -->
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                <i class="bi bi-upload me-2"></i>Post Job
+              </button>
+            </div>
+            <div class="text-center mt-4">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-arrow-left-circle me-2"></i>Back
+            </a>
+          </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

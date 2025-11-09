@@ -1,0 +1,59 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+          <h4 class="fw-bold text-primary mb-4"><i class="bi bi-mortarboard-fill me-1"></i> Add Education</h4>
+
+          <form action="/employee/save_education" method="POST">
+
+            <input type="hidden" name="employee_id" value="<%- employee %>">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">College Name</label>
+              <input type="text" name="college_name" class="form-control" placeholder="Enter College Name" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Course Title</label>
+              <input type="text" name="course_title" class="form-control" placeholder="Enter Course Title" required>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Passing Year</label>
+                <input type="number" name="passing_year" class="form-control" placeholder="Enter Passing Year" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Marks / CGPA</label>
+                <input type="text" name="marks" class="form-control" placeholder="Enter Marks or CGPA" required>
+              </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+              <label class="form-label fw-semibold">Status</label>
+              <select name="status" class="form-select" required>
+                <option value="" selected>Select Status</option>
+                <option value="Complete">Complete</option>
+                <option value="Appearing">Appearing</option>
+              </select>
+            </div>
+
+            <div class="text-end">
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-save me-1"></i> Save Education
+              </button>
+              <a href="/employee/profile" class="btn btn-outline-secondary px-4 ms-2">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back to Profile
+              </a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

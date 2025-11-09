@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports | Admin Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background-color: #f4f6f9; font-family: 'Poppins', sans-serif; }
+    .content { margin-left: 260px; padding: 40px; }
+    .card { border: none; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    table th { background-color: #343a40; color: #fff; }
+    h5 i { font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <%- include('slider.ejs') %>
+
+  <div class="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3><i class="fa fa-file-alt text-primary me-2"></i> Reports & Analytics</h3>
+      <button id="downloadPDF" class="btn btn-danger">
+        <i class="fa fa-file-pdf me-1"></i> Download PDF
+      </button>
+    </div>
+
+    <div id="reportSection">
+      <!-- Summary Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <div class="card p-3 text-center">
+            <h5>Total Jobs</h5>
+            <h3 class="text-primary fw-bold"><%= jobs[0].total_jobs %></h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card p-3 text-center">
+            <h5>Total Employees</h5>
+            <h3 class="text-success fw-bold"><%= employee[0].total_employees %></h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card p-3 text-center">
+            <h5>Companies</h5>
+            <h3 class="text-warning fw-bold"><%= company[0].total_companies %></h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card p-3 text-center">
+            <h5>Applications</h5>
+            <h3 class="text-danger fw-bold"><%= applications[0].total_applications %></h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Charts -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5><i class="fa fa-chart-column text-primary me-2"></i> Monthly Applications</h5>
+            <canvas id="applicationsChart" height="350"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5><i class="fa fa-chart-pie text-success me-2"></i> Job Categories Distribution</h5>
+            <canvas id="jobCategoryChart" height="350"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Daily Charts Section -->
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5><i class="fa fa-calendar-day text-danger me-2"></i> Daily Applications (Last 7 Days)</h5>
+            <canvas id="dailyApplicationsChart" height="350"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5><i class="fa fa-chart-pie text-warning me-2"></i> Daily Job Postings (Last 7 Days)</h5>
+            <canvas id="dailyJobsChart" height="350"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card mt-4 p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">
+            <i class="fa fa-building text-primary me-2"></i> Top Performing Companies
+          </h5>
+          <a href="#" class="text-decoration-none text-primary small">View All <i class="fa fa-arrow-right ms-1"></i></a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped align-middle text-center mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>Rank</th>
+                <th>Company Name</th>
+                <th>Total Jobs</th>
+                <th>Total Applications</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (topCompanies && topCompanies.length > 0) { %>
+                <% topCompanies.forEach((comp, index) => { %>
+                  <tr>
+                    <td><span class="badge bg-secondary"><%= index + 1 %></span></td>
+                    <td class="fw-semibold text-start"><i class="fa fa-building text-info me-2"></i> <%= comp.company_name %></td>
+                    <td><span class="text-primary fw-bold"><%= comp.total_jobs %></span></td>
+                    <td><span class="text-success fw-bold"><%= comp.total_applications %></span></td>
+                    <td><%= comp.category || '—' %></td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr><td colspan="5" class="text-muted py-3">No data available for top companies.</td></tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ PDF Download (html2pdf.js)
+    document.getElementById("downloadPDF").addEventListener("click", function () {
+      const reportElement = document.getElementById("reportSection");
+      const opt = {
+        margin: 0.5,
+        filename: 'Admin_Report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().from(reportElement).set(opt).save();
+    });
+
+    // Monthly Applications Chart
+    const monthlyLabels = <%- JSON.stringify(monthlyApplications.map(a => a.month)) %>;
+    const monthlyData = <%- JSON.stringify(monthlyApplications.map(a => a.total)) %>;
+    new Chart(document.getElementById('applicationsChart'), {
+      type: 'bar',
+      data: { labels: monthlyLabels, datasets: [{ label: 'Applications', data: monthlyData, backgroundColor: '#0d6efd' }] },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+
+    // Job Categories Pie Chart
+    const categoryLabels = <%- JSON.stringify(jobCategories.map(c => c.category)) %>;
+    const categoryData = <%- JSON.stringify(jobCategories.map(c => c.total)) %>;
+    new Chart(document.getElementById('jobCategoryChart'), {
+      type: 'pie',
+      data: { labels: categoryLabels, datasets: [{ data: categoryData, backgroundColor: ['#0d6efd','#198754','#ffc107','#dc3545','#6f42c1','#20c997'] }] },
+      options: { responsive: true }
+    });
+
+    // ✅ Daily Applications (Bar)
+    const dailyAppLabels = <%- JSON.stringify(dailyApplications.map(d => d.date)) %>;
+    const dailyAppData = <%- JSON.stringify(dailyApplications.map(d => d.total)) %>;
+    new Chart(document.getElementById('dailyApplicationsChart'), {
+      type: 'bar',
+      data: { labels: dailyAppLabels, datasets: [{ label: 'Applications', data: dailyAppData, backgroundColor: '#dc3545' }] },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+
+    // ✅ Daily Job Postings (Pie)
+    const dailyJobLabels = <%- JSON.stringify(dailyJobs.map(d => d.date)) %>;
+    const dailyJobData = <%- JSON.stringify(dailyJobs.map(d => d.total)) %>;
+    new Chart(document.getElementById('dailyJobsChart'), {
+      type: 'pie',
+      data: { labels: dailyJobLabels, datasets: [{ data: dailyJobData, backgroundColor: ['#ffc107','#0d6efd','#20c997','#6f42c1','#dc3545','#198754'] }] },
+      options: { responsive: true }
+    });
+  </script>
+</body>
+</html>

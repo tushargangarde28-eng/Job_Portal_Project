@@ -1,0 +1,86 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+        <!-- Gradient Header -->
+        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #4e73df, #1cc88a);">
+          <h4 class="mb-0">
+            <i class="bi bi-building me-2"></i> Company Registration
+          </h4>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-5">
+          <form action="/company/register" method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3 position-relative">
+              <label for="company_name" class="form-label fw-semibold">Company Name</label>
+              <input type="text" class="form-control ps-5" id="company_name" name="company_name" placeholder="Enter company name" required>
+              <i class="bi bi-building position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="company_location" class="form-label fw-semibold">Company Location</label>
+              <input type="text" class="form-control ps-5" id="company_location" name="company_location" placeholder="Enter location" required>
+              <i class="bi bi-geo-alt position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="hr_name" class="form-label fw-semibold">HR Name</label>
+              <input type="text" class="form-control ps-5" id="hr_name" name="hr_name" placeholder="Enter HR name" required>
+              <i class="bi bi-person-badge position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="hr_designation" class="form-label fw-semibold">HR Designation</label>
+              <input type="text" class="form-control ps-5" id="hr_designation" name="hr_designation" placeholder="Enter HR designation" required>
+              <i class="bi bi-person-check position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="hr_mobile" class="form-label fw-semibold">HR Mobile</label>
+              <input type="text" class="form-control ps-5" id="hr_mobile" name="hr_mobile" placeholder="Enter HR mobile number" required>
+              <i class="bi bi-telephone position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="hr_email" class="form-label fw-semibold">HR Email</label>
+              <input type="email" class="form-control ps-5" id="hr_email" name="hr_email" placeholder="Enter HR email" required>
+              <i class="bi bi-envelope position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="hr_password" class="form-label fw-semibold">HR Password</label>
+              <input type="password" class="form-control ps-5" id="hr_password" name="hr_password" placeholder="Enter password" required>
+              <i class="bi bi-lock position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="mb-3 position-relative">
+              <label for="website_url" class="form-label fw-semibold">Website URL</label>
+              <input type="url" class="form-control ps-5" id="website_url" name="website_url" placeholder="Enter website (optional)">
+              <i class="bi bi-globe position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-success btn-lg shadow-sm">Register</button>
+            </div>
+
+            <div class="text-center mt-3">
+              <a href="/company_login" class="btn btn-link btn-sm">Already have an account? Login</a>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>
+
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

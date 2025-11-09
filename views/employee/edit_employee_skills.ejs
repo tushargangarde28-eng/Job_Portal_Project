@@ -1,0 +1,84 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+          <h4 class="fw-bold text-primary mb-4">
+            <i class="bi bi-lightning-charge me-1"></i> Edit Employee Skills
+          </h4>
+
+          <form action="/employee/update_skills" method="POST">
+            <input type="hidden" name="employee_id" value=" <%= user %> ">
+
+            <div id="skillsContainer">
+              <% if (skills && skills.length > 0) { %>
+                <% skills.forEach(function(skill, index) { %>
+                  <div class="input-group mb-2 skill-item">
+                    <input type="text" name="skill_name[]" class="form-control" 
+                           value="<%= skill.skill_name %>" placeholder="Enter Skill" required>
+                    <button type="button" class="btn btn-outline-danger removeSkill">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                <% }) %>
+              <% } else { %>
+                <div class="input-group mb-2 skill-item">
+                  <input type="text" name="skill_name[]" class="form-control" placeholder="Enter Skill" required>
+                  <button type="button" class="btn btn-outline-danger removeSkill">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              <% } %>
+            </div>
+
+            <!-- Add More Skills Button -->
+            <div class="mb-3">
+              <button type="button" id="addSkill" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-plus-circle me-1"></i> Add Another Skill
+              </button>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-end">
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-save me-1"></i> Update Skills
+              </button>
+              <a href="/employee/profile" class="btn btn-outline-secondary px-4 ms-2">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back to Profile
+              </a>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const skillsContainer = document.getElementById('skillsContainer');
+
+  // Add new skill input
+  document.getElementById('addSkill').addEventListener('click', function() {
+    const skillGroup = document.createElement('div');
+    skillGroup.className = 'input-group mb-2 skill-item';
+    skillGroup.innerHTML = `
+      <input type="text" name="skill_name[]" class="form-control" placeholder="Enter Skill" required>
+      <button type="button" class="btn btn-outline-danger removeSkill">
+        <i class="bi bi-trash"></i>
+      </button>
+    `;
+    skillsContainer.appendChild(skillGroup);
+  });
+
+  // Remove skill input dynamically
+  skillsContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('removeSkill') || e.target.closest('.removeSkill')) {
+      const skillItem = e.target.closest('.skill-item');
+      if (skillItem) skillItem.remove();
+    }
+  });
+</script>

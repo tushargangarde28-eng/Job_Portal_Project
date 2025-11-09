@@ -1,0 +1,24 @@
+{
+  "name": "job_portal_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.2",
+    "express-session": "^1.18.2",
+    "file-upload": "^0.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.15.2",
+    "nodemailer": "^7.0.9"
+  }
+}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Job Portal</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0e7ff, #eef2ff);
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #fff;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #007bff !important;
+    }
+
+    .btn-outline-success, .btn-outline-danger, .btn-outline-dark {
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-success:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    /* Login Card */
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 70px);
+      background: linear-gradient(135deg, #007bff33, #6f42c133);
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 40px 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 420px;
+      transition: transform 0.3s ease;
+    }
+
+    .login-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .login-card h3 {
+      text-align: center;
+      color: #222;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .login-card p {
+      text-align: center;
+      color: #6c757d;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .login-icon {
+      font-size: 50px;
+      color: #007bff;
+      display: block;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #007bff, #6610f2);
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      padding: 12px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #0056b3, #520dc2);
+    }
+
+    .text-small {
+      font-size: 14px;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">JobPortal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#commonNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="commonNavbar">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold active" href="/">
+              <i class="bi bi-house-door me-1"></i> Home
+            </a>
+          </li>
+        </ul>
+
+        <div class="d-flex ms-lg-3">
+          <a href="/admin_login" class="me-2">
+            <button class="btn btn-outline-success"><i class="bi bi-person-gear me-1"></i>Admin</button>
+          </a>
+          <a href="/register" class="me-2">
+            <button class="btn btn-outline-success"><i class="bi bi-person-plus me-1"></i>Register</button>
+          </a>
+          <a href="/login" class="me-2">
+            <button class="btn btn-outline-danger"><i class="bi bi-box-arrow-in-right me-1"></i>Login</button>
+          </a>
+          <a href="/company_login">
+            <button class="btn btn-outline-dark"><i class="bi bi-building me-1"></i>Company</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ✅ Login Section -->
+  <div class="login-wrapper">
+    <div class="login-card">
+      <i class="fa fa-user-shield login-icon"></i>
+      <h3>Admin Login</h3>
+      <p>Access your admin dashboard securely</p>
+
+      <form action="/admin_login" method="POST">
+        <div class="mb-3">
+          <label class="form-label">Email address</label>
+          <input type="email" name="admin_email" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="admin_password" class="form-control" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-sign-in-alt me-2"></i>Login
+        </button>
+
+        <div class="text-center mt-3 text-small">
+          <a href="#" class="text-decoration-none text-primary">Forgot password?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+<%- include ('footer.ejs') %>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

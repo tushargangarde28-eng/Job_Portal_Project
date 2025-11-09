@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Saved Jobs | Job Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+<%- include('navbar.ejs') %>
+<div class="container my-5">
+  <h3 class="fw-bold mb-4 text-center text-primary">My Saved Jobs</h3>
+
+  <% if (jobs.length === 0) { %>
+    <div class="text-center">
+      <p class="text-muted">You haven't saved any jobs yet.</p>
+      <a href="/employee/jobs" class="btn btn-primary">Browse Jobs</a>
+    </div>
+  <% } else { %>
+    <div class="row">
+      <% for(var i=0; i<jobs.length;i++){ %>
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="card-title fw-bold mb-1"><%-jobs[i].job_title%></h5>
+                  <p class="text-muted mb-1">Des : <%-jobs[i].job_description%></p>
+                  <p class="small text-muted mb-1">Type : <%-jobs[i].job_type %></p>
+                </div>
+                <span class="badge bg-primary"><%-jobs[i].job_type%></span>
+              </div>
+
+              <div class="mb-3">
+                <p class="small text-muted mb-1">Skills:</p>
+                <span class="badge bg-primary me-1"><%-jobs[i].skills %></span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted small">
+                  <i class="bi bi-clock me-1"></i><%-jobs[i].created_at%>
+                </span>
+                <div></div>
+                <form action="/employee/unsave_job/<%-jobs[i].job_id %>" method="POST" class="d-inline">
+                  <button type="submit" class="btn btn-outline-danger btn-sm me-2 px-3" onclick="return confirm('Are you sure you want to unsave this job?');">
+                    <i class="bi bi-trash me-1"></i> Unsave
+                  </button>
+                </form>
+                <!-- <a href="/employee/apply/<%-jobs[i].job_id %>" class="btn btn-outline-primary btn-sm">Apply Now</a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <% if ((i + 1) % 2 === 0) { %>
+          </div><div class="row">
+        <% } %>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('footer.ejs') %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

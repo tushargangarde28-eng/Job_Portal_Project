@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile | Job Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background-color: #f9fafc; }
+    .card { border-radius: 0.75rem; }
+    .profile-img { width: 120px; height: 120px; object-fit: cover; border: 3px solid #0d6efd; }
+    .section-title { border-left: 4px solid #0d6efd; padding-left: 10px; margin-bottom: 1rem; font-weight: 600; color: #0d6efd; }
+  </style>
+</head>
+<body>
+<%- include('navbar.ejs') %>
+
+  <!-- Edit Profile Section -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+
+            <div class="text-center mb-4">
+              <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" class="rounded-circle profile-img shadow-sm" alt="Profile Picture">
+              <h4 class="mt-3 fw-bold text-primary"><%-employee[0].employee_name%></h4>
+              <p class="text-muted mb-1">Edit your information below</p>
+            </div>
+
+            <form action="/employee/update_profile" method="POST" enctype="multipart/form-data">
+              <!-- Personal Information -->
+              <h5 class="section-title"><i class="bi bi-person-lines-fill me-1"></i> Personal Information</h5>
+              <div class="row mb-3">
+                <div class="col-md-6 mb-2">
+                  <label class="fw-semibold text-muted">Full Name</label>
+                  <input type="text" name="employee_name" class="form-control" value="Tushar Gangarde">
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label class="fw-semibold text-muted">Phone</label>
+                  <input type="text" name="phone" class="form-control" value="9876543210">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 mb-2">
+                  <label class="fw-semibold text-muted">Email</label>
+                  <input type="email" name="email" class="form-control" value="tushar.gangarde@example.com">
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label class="fw-semibold text-muted">Address</label>
+                  <input type="text" name="address" class="form-control" value="Pune, Maharashtra">
+                </div>
+              </div>
+
+              <!-- Skills -->
+              <h5 class="section-title"><i class="bi bi-lightning-charge-fill me-1"></i> Skills</h5>
+              <div class="mb-3">
+                <input type="text" name="skills[]" class="form-control mb-2" placeholder="JavaScript" value="JavaScript">
+                <input type="text" name="skills[]" class="form-control mb-2" placeholder="Node.js" value="Node.js">
+                <input type="text" name="skills[]" class="form-control mb-2" placeholder="React" value="React">
+              </div>
+
+              <!-- Education -->
+              <h5 class="section-title"><i class="bi bi-mortarboard-fill me-1"></i> Education</h5>
+              <div class="mb-3">
+                <div class="row g-2 mb-2">
+                  <div class="col-md-4"><input type="text" name="college_name[]" class="form-control" placeholder="College Name" value="Savitribai Phule Pune University"></div>
+                  <div class="col-md-3"><input type="text" name="course_title[]" class="form-control" placeholder="Course Title" value="Bachelor of Computer Science"></div>
+                  <div class="col-md-2"><input type="text" name="passing_year[]" class="form-control" placeholder="Passing Year" value="2023"></div>
+                  <div class="col-md-2"><input type="text" name="marks[]" class="form-control" placeholder="Marks" value="8.5 CGPA"></div>
+                  <div class="col-md-1">
+                    <select name="status[]" class="form-select">
+                      <option selected>Complete</option>
+                      <option>Appearing</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                  <div class="col-md-4"><input type="text" name="college_name[]" class="form-control" placeholder="College Name" value="Modern College of Arts"></div>
+                  <div class="col-md-3"><input type="text" name="course_title[]" class="form-control" placeholder="Course Title" value="HSC"></div>
+                  <div class="col-md-2"><input type="text" name="passing_year[]" class="form-control" placeholder="Passing Year" value="2020"></div>
+                  <div class="col-md-2"><input type="text" name="marks[]" class="form-control" placeholder="Marks" value="82%"></div>
+                  <div class="col-md-1">
+                    <select name="status[]" class="form-select">
+                      <option selected>Complete</option>
+                      <option>Appearing</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Experience -->
+              <h5 class="section-title"><i class="bi bi-briefcase-fill me-1"></i> Experience</h5>
+              <div class="mb-3">
+                <div class="row g-2 mb-2">
+                  <div class="col-md-3"><input type="text" name="job_title[]" class="form-control" placeholder="Job Title" value="Frontend Developer Intern"></div>
+                  <div class="col-md-3"><input type="text" name="company_name[]" class="form-control" placeholder="Company" value="TechNova Solutions"></div>
+                  <div class="col-md-2"><input type="text" name="start_year[]" class="form-control" placeholder="Start Year" value="Jan 2024"></div>
+                  <div class="col-md-2"><input type="text" name="end_year[]" class="form-control" placeholder="End Year" value="Jun 2024"></div>
+                  <div class="col-md-2"><input type="text" name="job_description[]" class="form-control" placeholder="Description" value="Built responsive UI components using React.js and integrated REST APIs."></div>
+                </div>
+              </div>
+
+              <!-- Resume -->
+              <h5 class="section-title"><i class="bi bi-file-earmark-person-fill me-1"></i> Resume</h5>
+              <div class="mb-3">
+                <input type="file" name="resume" class="form-control">
+                <small class="text-muted">Upload your resume in PDF format</small>
+              </div>
+
+              <!-- Buttons -->
+              <div class="text-end mt-4">
+                <button type="submit" class="btn btn-primary px-4"><i class="bi bi-save me-1"></i> Save Changes</button>
+                <a href="/employee/profile" class="btn btn-outline-secondary px-4 ms-2"><i class="bi bi-arrow-left-circle me-1"></i> Back</a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('footer.ejs') %>
+</body>
+</html>

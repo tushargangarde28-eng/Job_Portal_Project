@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JobPortal — Modern Design</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background-color: #f9fafc; }
+    .navbar { background: #1a1a2e; }
+    .navbar-brand, .nav-link, .btn-outline-light { color: #fff !important; }
+    .hero-section { background: linear-gradient(120deg,#1a1a2e,#16213e); color:#fff; }
+    .search-box { background:#fff; border-radius:1rem; box-shadow:0 4px 20px rgba(0,0,0,.1); }
+    .job-card { border:none; border-radius:.75rem; transition:all .3s ease; }
+    .job-card:hover { transform:translateY(-6px); box-shadow:0 8px 20px rgba(0,0,0,.1); }
+    footer { background:#0d1b2a; color:#cbd5e1; }
+  </style>
+</head>
+<body>
+  <%- include("navbar.ejs") %>
+
+  <section class="hero-section py-5 text-center">
+    <div class="container py-5">
+      <h1 class="display-5 fw-bold mb-3">Your Dream Job Awaits</h1>
+      <p class="lead mb-4">Search, Apply, and Get Hired — All in One Place</p>
+      <!-- <div class="search-box mx-auto p-3" style="max-width:800px;">
+        <form class="row g-2 align-items-center">
+          <div class="col-md-5">
+            <input class="form-control form-control-lg" placeholder="Job title or keyword">
+          </div>
+          <div class="col-md-5">
+            <input class="form-control form-control-lg" placeholder="Location">
+          </div>
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-primary btn-lg"><i class="bi bi-search"></i></button>
+          </div> -->
+        </form>
+      </div>
+    </div>
+      </section><!-- Popular Job Categories Section -->
+              <section class="py-5" style="background: linear-gradient(135deg, #eef2f3, #ffffff);">
+                <div class="container">
+                  <h3 class="fw-bold text-center mb-5">Explore Popular Job Categories</h3>
+                  <div class="row g-4">
+
+                    <div class="col-md-6 col-lg-3">
+                      <div class="card border-0 shadow-sm text-center p-4 rounded-4 h-100 hover-effect">
+                        <div class="mb-3">
+                          <i class="bi bi-code-slash text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Software Development</h6>
+                        <p class="text-muted small">Find roles in frontend, backend, and full-stack development.</p>
+                        <a href="/login" class="btn btn-outline-primary btn-sm mt-2">View Jobs</a>
+                      </div>
+                    </div>
+                  
+                    <div class="col-md-6 col-lg-3">
+                      <div class="card border-0 shadow-sm text-center p-4 rounded-4 h-100 hover-effect">
+                        <div class="mb-3">
+                          <i class="bi bi-bar-chart-line text-success" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Data & Analytics</h6>
+                        <p class="text-muted small">Work with data science, BI tools, and predictive analytics.</p>
+                        <a href="/login" class="btn btn-outline-success btn-sm mt-2">View Jobs</a>
+                      </div>
+                    </div>
+                  
+                    <div class="col-md-6 col-lg-3">
+                      <div class="card border-0 shadow-sm text-center p-4 rounded-4 h-100 hover-effect">
+                        <div class="mb-3">
+                          <i class="bi bi-brush text-warning" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Design & UX</h6>
+                        <p class="text-muted small">Create stunning digital experiences with UI/UX design.</p>
+                        <a href="/login" class="btn btn-outline-warning btn-sm mt-2">View Jobs</a>
+                      </div>
+                    </div>
+                  
+                    <div class="col-md-6 col-lg-3">
+                      <div class="card border-0 shadow-sm text-center p-4 rounded-4 h-100 hover-effect">
+                        <div class="mb-3">
+                          <i class="bi bi-megaphone text-danger" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Marketing & Sales</h6>
+                        <p class="text-muted small">Drive growth through creative campaigns and strategy.</p>
+                        <a href="/login" class="btn btn-outline-danger btn-sm mt-2">View Jobs</a>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="text-center mt-5">
+                    <a href="/login" class="btn btn-primary px-4 py-2 rounded-3">Browse All Categories</a>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Add hover animation -->
+              <style>
+                .hover-effect {
+                  transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                .hover-effect:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+                }
+              </style>
+
+
+  <!-- How It Works Section -->
+  <section class="py-5 bg-white">
+    <div class="container text-center">
+      <h3 class="fw-bold mb-5">How It Works</h3>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <i class="bi bi-search display-5 text-primary mb-3"></i>
+          <h5 class="fw-semibold">1. Search Jobs</h5>
+          <p class="text-muted">Find thousands of job listings across industries and locations.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-file-earmark-text display-5 text-success mb-3"></i>
+          <h5 class="fw-semibold">2. Apply Easily</h5>
+          <p class="text-muted">Submit your resume with one click and track your applications.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-briefcase display-5 text-warning mb-3"></i>
+          <h5 class="fw-semibold">3. Get Hired</h5>
+          <p class="text-muted">Connect with top companies and land your dream job fast.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+      <h3 class="fw-bold mb-3">Top Companies Hiring</h3><br>
+    <div class="d-flex justify-content-center flex-wrap gap-4 align-items-center"><br>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" height="40">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" height="40">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" height="40">
+  <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Tata_Consultancy_Services_Logo.svg" alt="TCS" height="40"> -->
+  <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Infosys_logo.svg" alt="Infosys" height="40"> -->
+</div>
+
+    </div>
+  </section>
+
+  <footer class="py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-1">© 2025 JobPortal. All rights reserved.</p>
+      <div>
+        <a href="#" class="text-muted me-3"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-muted me-3"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="text-muted"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
