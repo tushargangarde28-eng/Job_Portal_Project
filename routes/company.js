@@ -167,11 +167,11 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
   try {
     const applicationId = req.params.application_id;
 
-    // 1️⃣ Update the status to 'shortlisted'
+    // 1️⃣ Update the status
     const sql = "UPDATE applications SET status = 'shortlisted' WHERE application_id = ?";
     await exe(sql, [applicationId]);
 
-    // 2️⃣ Get both employee & company email details
+    // 2️⃣ Get emails
     const getEmailSql = `
       SELECT e.employee_email, e.employee_name, j.job_title, c.hr_email, c.company_name
       FROM applications a
@@ -181,19 +181,15 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
       WHERE a.application_id = ?;
     `;
     const rows = await exe(getEmailSql, [applicationId]);
-
-    if (!rows || rows.length === 0) {
-      return res.send("No data found for this application.");
-    }
+    if (!rows || rows.length === 0) return res.send("No data found for this application.");
 
     const data = rows[0];
-
     if (!data.employee_email || !data.hr_email) {
       console.log("⚠️ Missing email addresses:", data);
       return res.send("Missing employee or HR email address.");
     }
 
-    // 3️⃣ Mail to Employee
+    // 3️⃣ Send Mail to Employee
     const employeeHtml = `
       <h3>Congratulations, ${data.employee_name}!</h3>
       <p>Your application for the position <b>${data.job_title}</b> has been <b>shortlisted</b>.</p>
@@ -207,7 +203,7 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
       employeeHtml
     );
 
-    // 4️⃣ Mail to Company
+    // 4️⃣ Send Mail to Company
     const companyHtml = `
       <h3>Hello ${data.company_name},</h3>
       <p>You have successfully <b>shortlisted</b> the candidate <b>${data.employee_name}</b> for the position <b>${data.job_title}</b>.</p>
@@ -216,16 +212,92 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
       <p>— A2toZ Job Portal System</p>
     `;
     await send_mail(
-      data.hr_email, // ✅ fixed here
+      data.hr_email,
       `You Shortlisted ${data.employee_name} for ${data.job_title}`,
       companyHtml
     );
 
-    // 5️⃣ Popup & redirect
-    res.send(`<script>
-      alert("Mail sent successfully to both employee and company!");
-      window.location="/company/jobs";
-    </script>`);
+    // 5️⃣ Show Loader + Success Animation + Redirect
+    res.send(`
+      <html>
+        <head>
+          <title>Sending Emails...</title>
+          <style>
+            body {
+              margin: 0;
+              height: 100vh;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              background: linear-gradient(135deg, #007bff, #00c6ff);
+              font-family: 'Poppins', sans-serif;
+              color: #fff;
+              overflow: hidden;
+            }
+            .loader {
+              border: 6px solid rgba(255, 255, 255, 0.2);
+              border-top: 6px solid #fff;
+              border-radius: 50%;
+              width: 70px;
+              height: 70px;
+              animation: spin 1s linear infinite;
+              margin-bottom: 20px;
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            .fade {
+              opacity: 0;
+              animation: fadeIn 1s ease-in forwards;
+            }
+            @keyframes fadeIn {
+              to { opacity: 1; }
+            }
+            .success {
+              display: none;
+              text-align: center;
+              animation: popIn 0.8s ease forwards;
+            }
+            @keyframes popIn {
+              0% { transform: scale(0.5); opacity: 0; }
+              100% { transform: scale(1); opacity: 1; }
+            }
+            h2 {
+              font-weight: 500;
+              letter-spacing: 0.5px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="fade">
+            <div class="loader"></div>
+            <h2>Sending email notifications...</h2>
+          </div>
+
+          <div class="success" id="successMsg">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <h2>Emails sent successfully!</h2>
+          </div>
+
+          <script>
+            // Simulate loader -> success -> redirect
+            setTimeout(() => {
+              document.querySelector('.fade').style.display = 'none';
+              document.getElementById('successMsg').style.display = 'block';
+            }, 1500);
+
+            setTimeout(() => {
+              window.location.href = "/company/jobs";
+            }, 3000);
+          </script>
+        </body>
+      </html>
+    `);
   } catch (err) {
     console.error("❌ Error:", err);
     res.status(500).send("Error while sending emails.");
