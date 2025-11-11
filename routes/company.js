@@ -163,14 +163,16 @@ router.post("/jobs/:id/delete",async function(req,res){
 //   }
 // });
 
+
+// 📩 SHORTLIST ROUTE
 router.get("/applications/:application_id/shortlist", async (req, res) => {
   try {
     const applicationId = req.params.application_id;
 
-    // 1️⃣ Update status
+    // 1️⃣ Update the application status in database
     await exe("UPDATE applications SET status = 'shortlisted' WHERE application_id = ?", [applicationId]);
 
-    // 2️⃣ Fetch employee + company info
+    // 2️⃣ Fetch all required information
     const sql = `
       SELECT e.employee_email, e.employee_name, j.job_title, c.hr_email, c.company_name
       FROM applications a
@@ -182,28 +184,32 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
     const [data] = await exe(sql, [applicationId]);
     if (!data) return res.send("No data found for this application.");
 
-    // 3️⃣ Email contents
+    // 3️⃣ Email templates
     const employeeHtml = `
-      <h3>Congratulations, ${data.employee_name}!</h3>
-      <p>Your application for <b>${data.job_title}</b> has been <b>shortlisted</b>.</p>
-      <p>The company <b>${data.company_name}</b> will contact you soon.</p>
-      <br><p>— A2toZ Job Portal Team</p>
+      <div style="font-family: Arial, sans-serif; padding: 20px; background: #f6f9fc; border-radius: 10px;">
+        <h2 style="color: #007bff;">🎉 Congratulations, ${data.employee_name}!</h2>
+        <p>Your application for <b>${data.job_title}</b> has been <b>shortlisted</b>.</p>
+        <p>The company <b>${data.company_name}</b> will contact you soon.</p>
+        <p style="margin-top: 20px;">Best wishes,<br><b>A2toZ Job Portal Team</b></p>
+      </div>
     `;
 
     const companyHtml = `
-      <h3>Hello ${data.company_name},</h3>
-      <p>You have successfully <b>shortlisted</b> candidate <b>${data.employee_name}</b> for <b>${data.job_title}</b>.</p>
-      <p>An email has been sent to the candidate.</p>
-      <br><p>— A2toZ Job Portal System</p>
+      <div style="font-family: Arial, sans-serif; padding: 20px; background: #f6f9fc; border-radius: 10px;">
+        <h2 style="color: #28a745;">Candidate Shortlisted ✅</h2>
+        <p>You have successfully <b>shortlisted</b> candidate <b>${data.employee_name}</b> for <b>${data.job_title}</b>.</p>
+        <p>An email has been sent to the candidate automatically.</p>
+        <p style="margin-top: 20px;">Thanks,<br><b>A2toZ Job Portal System</b></p>
+      </div>
     `;
 
-    // 4️⃣ Send both mails in parallel (super fast 🚀)
+    // 4️⃣ Send both emails in parallel (faster)
     await Promise.all([
       send_mail(data.employee_email, `You’ve Been Shortlisted for ${data.job_title}!`, employeeHtml),
       send_mail(data.hr_email, `You Shortlisted ${data.employee_name} for ${data.job_title}`, companyHtml)
     ]);
 
-    // 5️⃣ Show loader + success
+    // 5️⃣ Success animation with redirect
     res.send(`
       <html>
         <head>
@@ -219,6 +225,7 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
               background: linear-gradient(135deg, #007bff, #00c6ff);
               font-family: 'Poppins', sans-serif;
               color: #fff;
+              text-align: center;
             }
             .loader {
               border: 6px solid rgba(255, 255, 255, 0.2);
@@ -230,7 +237,7 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
               margin-bottom: 20px;
             }
             @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            .success { display: none; text-align: center; }
+            .success { display: none; }
             svg { margin-bottom: 15px; }
           </style>
         </head>
@@ -259,11 +266,10 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
       </html>
     `);
   } catch (err) {
-    console.error("❌ Error:", err);
+    console.error("❌ Error while shortlisting:", err);
     res.status(500).send("Error while sending emails.");
   }
 });
-
 
 
 router.get("/applications/:application_id/reject",async function (req,res){
