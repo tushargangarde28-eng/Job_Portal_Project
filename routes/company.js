@@ -167,12 +167,11 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
   try {
     const applicationId = req.params.application_id;
 
-    // 1️⃣ Update the status
-    const sql = "UPDATE applications SET status = 'shortlisted' WHERE application_id = ?";
-    await exe(sql, [applicationId]);
+    // 1️⃣ Update status
+    await exe("UPDATE applications SET status = 'shortlisted' WHERE application_id = ?", [applicationId]);
 
-    // 2️⃣ Get emails
-    const getEmailSql = `
+    // 2️⃣ Fetch employee + company info
+    const sql = `
       SELECT e.employee_email, e.employee_name, j.job_title, c.hr_email, c.company_name
       FROM applications a
       JOIN employee e ON a.employee_id = e.employee_id
@@ -180,44 +179,31 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
       JOIN company c ON j.company_id = c.company_id
       WHERE a.application_id = ?;
     `;
-    const rows = await exe(getEmailSql, [applicationId]);
-    if (!rows || rows.length === 0) return res.send("No data found for this application.");
+    const [data] = await exe(sql, [applicationId]);
+    if (!data) return res.send("No data found for this application.");
 
-    const data = rows[0];
-    if (!data.employee_email || !data.hr_email) {
-      console.log("⚠️ Missing email addresses:", data);
-      return res.send("Missing employee or HR email address.");
-    }
-
-    // 3️⃣ Send Mail to Employee
+    // 3️⃣ Email contents
     const employeeHtml = `
       <h3>Congratulations, ${data.employee_name}!</h3>
-      <p>Your application for the position <b>${data.job_title}</b> has been <b>shortlisted</b>.</p>
-      <p>The company <b>${data.company_name}</b> will contact you soon for further steps.</p>
-      <br>
-      <p>— A2toZ Job Portal Team</p>
+      <p>Your application for <b>${data.job_title}</b> has been <b>shortlisted</b>.</p>
+      <p>The company <b>${data.company_name}</b> will contact you soon.</p>
+      <br><p>— A2toZ Job Portal Team</p>
     `;
-    await send_mail(
-      data.employee_email,
-      `You’ve Been Shortlisted for ${data.job_title}!`,
-      employeeHtml
-    );
 
-    // 4️⃣ Send Mail to Company
     const companyHtml = `
       <h3>Hello ${data.company_name},</h3>
-      <p>You have successfully <b>shortlisted</b> the candidate <b>${data.employee_name}</b> for the position <b>${data.job_title}</b>.</p>
-      <p>An email notification has been sent to the candidate.</p>
-      <br>
-      <p>— A2toZ Job Portal System</p>
+      <p>You have successfully <b>shortlisted</b> candidate <b>${data.employee_name}</b> for <b>${data.job_title}</b>.</p>
+      <p>An email has been sent to the candidate.</p>
+      <br><p>— A2toZ Job Portal System</p>
     `;
-    await send_mail(
-      data.hr_email,
-      `You Shortlisted ${data.employee_name} for ${data.job_title}`,
-      companyHtml
-    );
 
-    // 5️⃣ Show Loader + Success Animation + Redirect
+    // 4️⃣ Send both mails in parallel (super fast 🚀)
+    await Promise.all([
+      send_mail(data.employee_email, `You’ve Been Shortlisted for ${data.job_title}!`, employeeHtml),
+      send_mail(data.hr_email, `You Shortlisted ${data.employee_name} for ${data.job_title}`, companyHtml)
+    ]);
+
+    // 5️⃣ Show loader + success
     res.send(`
       <html>
         <head>
@@ -233,7 +219,6 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
               background: linear-gradient(135deg, #007bff, #00c6ff);
               font-family: 'Poppins', sans-serif;
               color: #fff;
-              overflow: hidden;
             }
             .loader {
               border: 6px solid rgba(255, 255, 255, 0.2);
@@ -244,56 +229,31 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
               animation: spin 1s linear infinite;
               margin-bottom: 20px;
             }
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-            .fade {
-              opacity: 0;
-              animation: fadeIn 1s ease-in forwards;
-            }
-            @keyframes fadeIn {
-              to { opacity: 1; }
-            }
-            .success {
-              display: none;
-              text-align: center;
-              animation: popIn 0.8s ease forwards;
-            }
-            @keyframes popIn {
-              0% { transform: scale(0.5); opacity: 0; }
-              100% { transform: scale(1); opacity: 1; }
-            }
-            h2 {
-              font-weight: 500;
-              letter-spacing: 0.5px;
-            }
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            .success { display: none; text-align: center; }
+            svg { margin-bottom: 15px; }
           </style>
         </head>
         <body>
-          <div class="fade">
+          <div id="loader">
             <div class="loader"></div>
-            <h2>Sending email notifications...</h2>
+            <h2>Sending emails...</h2>
           </div>
-
-          <div class="success" id="successMsg">
+          <div id="success" class="success">
             <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
               <polyline points="22 4 12 14.01 9 11.01"/>
             </svg>
             <h2>Emails sent successfully!</h2>
           </div>
-
           <script>
-            // Simulate loader -> success -> redirect
             setTimeout(() => {
-              document.querySelector('.fade').style.display = 'none';
-              document.getElementById('successMsg').style.display = 'block';
-            }, 1500);
-
+              document.getElementById('loader').style.display = 'none';
+              document.getElementById('success').style.display = 'block';
+            }, 1000);
             setTimeout(() => {
               window.location.href = "/company/jobs";
-            }, 3000);
+            }, 2500);
           </script>
         </body>
       </html>
@@ -303,6 +263,7 @@ router.get("/applications/:application_id/shortlist", async (req, res) => {
     res.status(500).send("Error while sending emails.");
   }
 });
+
 
 
 router.get("/applications/:application_id/reject",async function (req,res){
